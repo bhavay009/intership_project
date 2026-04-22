@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Search, Plus, Filter, Mail, Phone, Calendar as CalendarIcon, Tag, Flame, Loader2 } from 'lucide-react';
+import { Search, Plus, Filter, Mail, Phone, Calendar as CalendarIcon, Tag, Flame, Loader2, Users } from 'lucide-react';
 import LeadModal from '../components/LeadModal';
 import { supabase } from '../lib/supabase';
 import toast from 'react-hot-toast';

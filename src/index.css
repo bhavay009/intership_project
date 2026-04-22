@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+* {
+  font-family: 'Outfit', sans-serif !important;
+}
+
 @layer base {
   :root {
     --background: 210 40% 98%;
@@ -22,7 +26,6 @@
 
   body {
     @apply bg-slate-50 text-slate-900 antialiased min-h-screen selection:bg-blue-100 selection:text-blue-900;
-    font-family: 'Outfit', sans-serif;
   }
 
   /* Custom Scrollbar */
