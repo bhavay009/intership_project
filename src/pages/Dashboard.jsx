@@ -56,20 +56,22 @@ const itemVariants = {
 };
 
 const StatCard = ({ title, value, icon, trend }) => (
-  <motion.div variants={itemVariants} className="card p-6 hover:shadow-md transition-shadow">
+  <motion.div variants={itemVariants} className="card p-6 card-hover group">
     <div className="flex items-center justify-between">
       <div>
-        <p className="text-sm font-medium text-gray-500">{title}</p>
-        <p className="text-3xl font-bold text-gray-900 mt-2">{value}</p>
+        <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">{title}</p>
+        <p className="text-3xl font-black text-slate-900 mt-2 tracking-tighter">{value}</p>
       </div>
-      <div className="h-12 w-12 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600 border border-blue-100">
+      <div className="h-12 w-12 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center border border-blue-100 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3 shadow-inner">
         {icon}
       </div>
     </div>
-    <div className="mt-4 flex items-center text-sm">
-      <TrendingUp className="h-4 w-4 text-emerald-500 mr-1" />
-      <span className="text-emerald-500 font-medium">{trend}</span>
-      <span className="text-gray-500 ml-2">vs last month</span>
+    <div className="mt-6 flex items-center gap-2">
+      <div className="px-2 py-0.5 rounded-full bg-emerald-50 border border-emerald-100 flex items-center gap-1">
+        <TrendingUp className="h-3 w-3 text-emerald-500" />
+        <span className="text-[10px] text-emerald-600 font-black">{trend}</span>
+      </div>
+      <span className="text-[10px] text-slate-400 font-bold uppercase tracking-tight">Growth</span>
     </div>
   </motion.div>
 );

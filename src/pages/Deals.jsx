@@ -8,6 +8,8 @@ import {
 import { supabase } from '../lib/supabase';
 import toast from 'react-hot-toast';
 import DealModal from '../components/DealModal';
+import { CardSkeleton } from '../components/SkeletonLoader';
+import EmptyState from '../components/EmptyState';
 
 const STAGES = ['Inquiry', 'Negotiation', 'Agreement', 'Closed'];
 
@@ -154,23 +156,29 @@ export const Deals = () => {
       {/* Header */}
       <div className="flex justify-between items-center px-2">
         <div>
-          <h1 className="text-4xl font-black text-gray-900 tracking-tighter uppercase italic">Deal Pipeline</h1>
-          <p className="text-gray-400 font-bold text-sm tracking-tight uppercase">High-Performance Transaction Kanban</p>
+          <h1 className="text-2xl font-bold text-gray-900">Deal Pipeline</h1>
+          <p className="text-sm text-gray-500 mt-1">Manage and track your transaction workflow through the pipeline.</p>
         </div>
         <button 
           onClick={() => { setEditingDeal(null); setIsModalOpen(true); }}
-          className="flex items-center gap-3 bg-gray-900 text-white px-8 py-4 rounded-2xl hover:bg-black transition-all font-black text-[10px] uppercase tracking-widest shadow-2xl active:scale-95"
+          className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors text-sm font-medium shadow-sm"
         >
-          <Plus size={18} /> New Deal
+          <Plus size={16} /> New Deal
         </button>
       </div>
 
-      {/* Kanban Board */}
       <div className="flex-1 overflow-x-auto pb-8 -mx-4 px-4 min-h-[600px]">
         {loading ? (
-          <div className="flex flex-col items-center justify-center h-full gap-4">
-            <Loader2 className="animate-spin text-blue-600" size={48} />
-            <p className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-400">Loading Pipeline State</p>
+          <div className="flex gap-6 h-full min-w-max">
+            {[...Array(4)].map((_, i) => (
+              <div key={i} className="w-[300px] space-y-4">
+                <div className="h-10 bg-slate-100 rounded-xl" />
+                <div className="bg-slate-50/50 rounded-[2rem] p-3 space-y-4">
+                  <CardSkeleton />
+                  <CardSkeleton />
+                </div>
+              </div>
+            ))}
           </div>
         ) : (
           <div className="flex gap-6 h-full min-w-max">

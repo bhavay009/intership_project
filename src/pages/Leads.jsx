@@ -4,6 +4,8 @@ import { Search, Plus, Filter, Mail, Phone, Calendar as CalendarIcon, Tag, Flame
 import LeadModal from '../components/LeadModal';
 import { supabase } from '../lib/supabase';
 import toast from 'react-hot-toast';
+import EmptyState from '../components/EmptyState';
+import { TableSkeleton } from '../components/SkeletonLoader';
 
 const StatusBadge = ({ status }) => {
   const colors = {
@@ -156,8 +158,8 @@ export const Leads = () => {
         {/* Table */}
         <div className="overflow-x-auto min-h-[400px]">
           {loading ? (
-             <div className="flex justify-center items-center h-[300px]">
-                <Loader2 className="animate-spin h-8 w-8 text-blue-500" />
+             <div className="p-8">
+                <TableSkeleton rows={5} cols={6} />
              </div>
           ) : (
             <table className="w-full text-left text-sm text-gray-600">
@@ -174,8 +176,14 @@ export const Leads = () => {
               <tbody className="divide-y divide-gray-100 bg-white">
                 {displayLeads.length === 0 ? (
                   <tr>
-                    <td colSpan="6" className="px-6 py-8 text-center text-gray-400">
-                      No leads found matching your criteria.
+                    <td colSpan="6" className="px-6 py-12">
+                      <EmptyState 
+                        title="No Prospects Found"
+                        message="Your lead search or filters returned zero matches. Refine your query or onboard a new lead to begin."
+                        icon={Users}
+                        actionLabel="Add New Lead"
+                        onAction={() => handleOpenModal()}
+                      />
                     </td>
                   </tr>
                 ) : displayLeads.map((lead) => (

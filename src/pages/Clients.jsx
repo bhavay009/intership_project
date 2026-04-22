@@ -8,6 +8,8 @@ import {
 import { supabase } from '../lib/supabase';
 import toast from 'react-hot-toast';
 import ClientModal from '../components/ClientModal';
+import { CardSkeleton } from '../components/SkeletonLoader';
+import EmptyState from '../components/EmptyState';
 
 const ClientCard = ({ client, onEdit, onDelete }) => (
   <motion.div
@@ -154,36 +156,34 @@ export const Clients = () => {
       {/* Header Section */}
       <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
         <div>
-          <h1 className="text-4xl font-black text-gray-900 tracking-tighter uppercase italic">Client Roster</h1>
-          <p className="text-gray-400 font-bold text-sm tracking-tight">Active Buyer & Seller Portfolio Management</p>
+          <h1 className="text-2xl font-bold text-gray-900">Client Roster</h1>
+          <p className="text-sm text-gray-500 mt-1">View and manage your active buyer and seller portfolio.</p>
         </div>
         <button 
           onClick={() => { setEditingClient(null); setIsModalOpen(true); }}
-          className="flex items-center gap-3 bg-blue-600 text-white px-8 py-4 rounded-[2.5rem] hover:bg-blue-700 transition-all font-black text-xs uppercase tracking-widest shadow-2xl shadow-blue-200 active:scale-95"
+          className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors text-sm font-medium shadow-sm"
         >
-          <UserPlus size={18} /> New Account
+          <UserPlus size={16} /> New Account
         </button>
       </div>
 
-      {/* Control Bar */}
       <div className="relative group max-w-2xl">
-        <div className="absolute inset-y-0 left-6 flex items-center pointer-events-none">
-          <Search className="h-5 w-5 text-gray-300 group-focus-within:text-blue-500 transition-colors" />
+        <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
+          <Search className="h-5 w-5 text-gray-400" />
         </div>
         <input
           type="text"
-          placeholder="Filter clients by name, contact info, or dossier tags..."
+          placeholder="Search leads by name, email, or phone..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="w-full pl-16 pr-8 py-5 bg-white border border-gray-100 rounded-[2rem] text-sm font-bold tracking-tight outline-none focus:ring-4 focus:ring-blue-50 shadow-sm focus:shadow-xl transition-all placeholder:text-gray-300"
+          className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
       </div>
 
       {/* Grid Content */}
       {loading ? (
-        <div className="flex flex-col items-center justify-center py-20 gap-4">
-          <Loader2 className="animate-spin text-blue-600" size={48} />
-          <p className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-400">Synchronizing Local Roster</p>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {[...Array(8)].map((_, i) => <CardSkeleton key={i} />)}
         </div>
       ) : (
         <motion.div 
@@ -201,12 +201,14 @@ export const Clients = () => {
                 />
               ))
             ) : (
-              <div className="col-span-full py-32 text-center">
-                <div className="h-24 w-24 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <Users size={40} className="text-gray-200" />
-                </div>
-                <h3 className="text-2xl font-black text-gray-900 tracking-tighter uppercase italic">No Dossiers Found</h3>
-                <p className="text-gray-400 font-bold max-w-xs mx-auto mt-2 tracking-tight">Your search yielded no matched client profiles in the active database.</p>
+              <div className="col-span-full">
+                <EmptyState 
+                  title="No Client Dossiers"
+                  message="Your current query doesn't match any existing client records. Onboard a new buyer or seller to grow your portfolio."
+                  icon={Users}
+                  actionLabel="New Account"
+                  onAction={() => { setEditingClient(null); setIsModalOpen(true); }}
+                />
               </div>
             )}
           </AnimatePresence>

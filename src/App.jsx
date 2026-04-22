@@ -9,6 +9,9 @@ import { Leads } from './pages/Leads';
 import { Properties } from './pages/Properties';
 import { Clients } from './pages/Clients';
 import { Deals } from './pages/Deals';
+import { Reports } from './pages/Reports';
+import { Users } from './pages/Users';
+import { Settings } from './pages/Settings';
 
 function App() {
   return (
@@ -25,9 +28,9 @@ function App() {
             <Route path="properties" element={<Properties />} />
             <Route path="clients" element={<Clients />} />
             <Route path="deals" element={<Deals />} />
-            <Route path="reports" element={<GenericPage title="Reports" />} />
-            <Route path="users" element={<GenericPage title="Users" />} />
-            <Route path="settings" element={<GenericPage title="Settings" />} />
+            <Route path="reports" element={<Reports />} />
+            <Route path="users" element={<Users />} />
+            <Route path="settings" element={<Settings />} />
           </Route>
         </Route>
       </Routes>

@@ -9,6 +9,8 @@ import {
 import { supabase } from '../lib/supabase';
 import toast from 'react-hot-toast';
 import PropertyModal from '../components/PropertyModal';
+import { CardSkeleton } from '../components/SkeletonLoader';
+import EmptyState from '../components/EmptyState';
 
 const PropertyCard = ({ property, onEdit, onDelete }) => (
   <motion.div
@@ -216,8 +218,8 @@ export const Properties = () => {
       {/* Header Section */}
       <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
         <div>
-          <h1 className="text-3xl font-extrabold text-gray-900 tracking-tight">Property Management</h1>
-          <p className="text-gray-500 mt-1 font-medium">Manage and monitor your full real estate inventory.</p>
+          <h1 className="text-2xl font-bold text-gray-900">Property Management</h1>
+          <p className="text-sm text-gray-500 mt-1">Manage and monitor your full real estate inventory.</p>
         </div>
         <div className="flex flex-wrap items-center gap-3 w-full lg:w-auto">
           <div className="flex bg-gray-100 p-1 rounded-xl border border-gray-200">
@@ -236,15 +238,15 @@ export const Properties = () => {
           </div>
           <button 
             onClick={() => setIsMapOpen(true)}
-            className="flex items-center gap-2 bg-white text-gray-700 px-4 py-2 rounded-xl border border-gray-200 hover:bg-gray-50 transition-all font-semibold shadow-sm"
+            className="flex items-center gap-2 bg-white text-gray-700 px-4 py-2 rounded-lg border border-gray-200 hover:bg-gray-50 transition-all text-sm font-medium shadow-sm"
           >
-            <Map size={18} /> Map
+            <Map size={16} /> Map
           </button>
           <button 
             onClick={() => { setEditingProperty(null); setIsModalOpen(true); }}
-            className="flex items-center gap-2 bg-blue-600 text-white px-5 py-2.5 rounded-xl hover:bg-blue-700 transition-all font-bold shadow-lg shadow-blue-100"
+            className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors text-sm font-medium shadow-sm"
           >
-            <Plus size={20} /> Add Property
+            <Plus size={16} /> Add Property
           </button>
         </div>
       </div>
@@ -306,9 +308,8 @@ export const Properties = () => {
 
       {/* Main Content View */}
       {loading ? (
-        <div className="flex flex-col items-center justify-center py-20 gap-4">
-          <Loader2 className="animate-spin text-blue-600" size={40} />
-          <p className="text-gray-500 font-medium">Syncing property records...</p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {[...Array(8)].map((_, i) => <CardSkeleton key={i} />)}
         </div>
       ) : (
         <AnimatePresence mode="wait">
@@ -330,10 +331,14 @@ export const Properties = () => {
                   />
                 ))
               ) : (
-                <div className="col-span-full py-20 text-center">
-                  <Home size={64} className="mx-auto text-gray-200 mb-4" />
-                  <h3 className="text-lg font-bold text-gray-900">No properties found</h3>
-                  <p className="text-gray-500">Try adjusting your filters or search terms.</p>
+                <div className="col-span-full">
+                  <EmptyState 
+                    title="No Inventory Matched"
+                    message="We couldn't find any properties matching your current filters. Try broadening your search or add a new listing."
+                    icon={Home}
+                    actionLabel="Add Property"
+                    onAction={() => { setEditingProperty(null); setIsModalOpen(true); }}
+                  />
                 </div>
               )}
             </motion.div>

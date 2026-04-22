@@ -1,8 +1,7 @@
-import React from 'react';
-import { Search, Bell, LogOut, User } from 'lucide-react';
+import { Search, Bell, LogOut, User, Menu } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
-const Topbar = () => {
+const Topbar = ({ onMenuClick }) => {
   const { signOut, user } = useAuth();
 
   const handleLogout = async () => {
@@ -10,11 +9,18 @@ const Topbar = () => {
   };
 
   return (
-    <header className="h-16 w-full bg-white border-b border-gray-200 flex items-center justify-between px-6 z-10 sticky top-0">
-      <div className="flex items-center flex-1">
+    <header className="h-16 w-full bg-white border-b border-gray-100 flex items-center justify-between px-4 md:px-6 z-10 sticky top-0">
+      <div className="flex items-center gap-4 flex-1">
+        <button 
+          onClick={onMenuClick}
+          className="p-2 -ml-2 text-gray-500 hover:bg-gray-50 rounded-lg lg:hidden"
+        >
+          <Menu size={20} />
+        </button>
+        
         <div className="relative w-full max-w-md hidden md:block">
-          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <Search className="h-5 w-5 text-gray-400" />
+          <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
+            <Search className="h-4 w-4 text-gray-400" />
           </div>
           <input
             type="text"
