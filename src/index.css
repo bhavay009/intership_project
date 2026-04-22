@@ -2,8 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
-* {
+html, body, #root, button, input, select, textarea, [role="button"] {
   font-family: 'Outfit', sans-serif !important;
+}
+
+* {
+  font-family: inherit;
 }
 
 @layer base {
