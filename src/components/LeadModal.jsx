@@ -104,7 +104,7 @@ const LeadModal = ({ isOpen, onClose, onSave, lead }) => {
               </div>
 
               <div>
-                <label className="block mb-1 text-sm font-medium text-gray-700">AI Score</label>
+                <label className="block mb-1 text-sm font-medium text-gray-700">Lead Score</label>
                 <select name="score" value={formData.score} onChange={handleChange} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
                   <option value="Hot">Hot</option>
                   <option value="Warm">Warm</option>
