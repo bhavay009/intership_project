@@ -1,23 +1,37 @@
 import { Routes, Route } from 'react-router-dom';
+import { Toaster } from 'react-hot-toast';
+import { AuthProvider } from './context/AuthContext';
+import { ProtectedRoute } from './components/ProtectedRoute';
 import Layout from './components/Layout';
 import Login from './pages/Login';
 import { Dashboard, GenericPage } from './pages/Dashboard';
+import { Leads } from './pages/Leads';
+import { Properties } from './pages/Properties';
+import { Clients } from './pages/Clients';
+import { Deals } from './pages/Deals';
 
 function App() {
   return (
-    <Routes>
-      <Route path="/login" element={<Login />} />
-      <Route path="/" element={<Layout />}>
-        <Route index element={<Dashboard />} />
-        <Route path="leads" element={<GenericPage title="Leads" />} />
-        <Route path="properties" element={<GenericPage title="Properties" />} />
-        <Route path="clients" element={<GenericPage title="Clients" />} />
-        <Route path="deals" element={<GenericPage title="Deals" />} />
-        <Route path="reports" element={<GenericPage title="Reports" />} />
-        <Route path="users" element={<GenericPage title="Users" />} />
-        <Route path="settings" element={<GenericPage title="Settings" />} />
-      </Route>
-    </Routes>
+    <AuthProvider>
+      <Toaster position="top-right" toastOptions={{ duration: 3000 }} />
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        
+        {/* Protected Routes */}
+        <Route element={<ProtectedRoute />}>
+          <Route path="/" element={<Layout />}>
+            <Route index element={<Dashboard />} />
+            <Route path="leads" element={<Leads />} />
+            <Route path="properties" element={<Properties />} />
+            <Route path="clients" element={<Clients />} />
+            <Route path="deals" element={<Deals />} />
+            <Route path="reports" element={<GenericPage title="Reports" />} />
+            <Route path="users" element={<GenericPage title="Users" />} />
+            <Route path="settings" element={<GenericPage title="Settings" />} />
+          </Route>
+        </Route>
+      </Routes>
+    </AuthProvider>
   );
 }
 

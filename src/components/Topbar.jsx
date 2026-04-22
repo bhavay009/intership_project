@@ -1,12 +1,12 @@
 import React from 'react';
-import { Search, Bell, User } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { Search, Bell, LogOut, User } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
 
 const Topbar = () => {
-  const navigate = useNavigate();
+  const { signOut, user } = useAuth();
 
-  const handleLogout = () => {
-    navigate('/login');
+  const handleLogout = async () => {
+    await signOut();
   };
 
   return (
@@ -32,14 +32,15 @@ const Topbar = () => {
         
         <div className="flex items-center space-x-3 border-l border-gray-200 pl-6">
           <div className="hidden md:block text-right">
-            <div className="text-sm font-medium text-gray-900">Admin User</div>
-            <div className="text-xs text-gray-500">Manage Account</div>
+            <div className="text-sm font-medium text-gray-900">{user?.user_metadata?.full_name || 'Agent'}</div>
+            <div className="text-xs text-gray-500">{user?.user_metadata?.role || 'Logged In'}</div>
           </div>
           <button 
             onClick={handleLogout}
-            className="h-10 w-10 rounded-full bg-blue-600 flex items-center justify-center hover:bg-blue-700 transition shadow-sm"
+            title="Sign Out"
+            className="h-10 w-10 px-2 rounded-full bg-red-50 text-red-600 flex items-center justify-center hover:bg-red-100 transition shadow-sm"
           >
-            <User className="h-5 w-5 text-white" />
+            <LogOut className="h-5 w-5" />
           </button>
         </div>
       </div>

@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { supabase } from '../lib/supabase';
 import { 
   TrendingUp, Users, Home, DollarSign, Activity, 
   Plus, FileText, Mail, Calendar, ArrowUpRight
@@ -74,6 +75,32 @@ const StatCard = ({ title, value, icon, trend }) => (
 );
 
 export const Dashboard = () => {
+  const [stats, setStats] = useState({ leads: 0, properties: 0, deals: 0, revenue: 0 });
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const [{ count: lCount }, { count: pCount }, { data: deals }] = await Promise.all([
+          supabase.from('leads').select('*', { count: 'exact', head: true }),
+          supabase.from('properties').select('*', { count: 'exact', head: true }),
+          supabase.from('deals').select('amount')
+        ]);
+  
+        const revenue = deals?.reduce((sum, d) => sum + Number(d.amount || 0), 0) || 0;
+        
+        setStats({
+          leads: lCount || 0,
+          properties: pCount || 0,
+          deals: deals?.length || 0,
+          revenue
+        });
+      } catch(err) {
+        console.error("Dashboard Stats Error:", err);
+      }
+    };
+    fetchStats();
+  }, []);
+
   return (
     <motion.div 
       className="space-y-6 pb-10"
@@ -99,11 +126,11 @@ export const Dashboard = () => {
 
       {/* KPI Cards */}
       <motion.div variants={itemVariants} className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
-        <StatCard title="Total Leads" value="3,214" icon={<Users />} trend="+24.5%" />
-        <StatCard title="Total Properties" value="842" icon={<Home />} trend="+12.2%" />
-        <StatCard title="Active Deals" value="148" icon={<Activity />} trend="+4.1%" />
-        <StatCard title="Monthly Revenue" value="$2.4M" icon={<DollarSign />} trend="+18.5%" />
-        <StatCard title="Conversion Rate" value="4.2%" icon={<TrendingUp />} trend="+1.2%" />
+        <StatCard title="Total Leads" value={stats.leads.toLocaleString()} icon={<Users />} trend="+0.0%" />
+        <StatCard title="Total Properties" value={stats.properties.toLocaleString()} icon={<Home />} trend="+0.0%" />
+        <StatCard title="Active Deals" value={stats.deals.toLocaleString()} icon={<Activity />} trend="+0.0%" />
+        <StatCard title="Total Revenue" value={`$${(stats.revenue / 1000000).toFixed(1)}M`} icon={<DollarSign />} trend="+0.0%" />
+        <StatCard title="Conversion Rate" value="0.0%" icon={<TrendingUp />} trend="0.0%" />
       </motion.div>
 
       {/* Charts Grid */}
